@@ -1,0 +1,20 @@
+body {
+    background-color: #27272c;
+    color: white;
+}
+
+#main {
+    margin-left: 80px;
+}
+
+#borders-canvas {
+	border: 1px solid black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#region-selector, #projection-selector {
+    width: 600px;
+    margin-bottom: 20px;
+}
+
