@@ -39,10 +39,8 @@ function findAllListsOfPairs(list) {
 
 function getMapWidth(coordinates_lists) {
     let min_max_data = getMinMax(coordinates_lists);
-    let min_x = min_max_data["min_x"];
-    let max_x = min_max_data["max_x"];
-    let region_width = max_x - min_x;
-    return region_width;
+    let {min_x, max_x} = min_max_data;
+    return max_x - min_x;
 }
 
 // Assumes offsets are smaller than (max - min) values (so that we can avoid modulo arithmetic with axes that involve negative numbers).
@@ -96,10 +94,7 @@ function scrollHorizontallyToFindMinMapWidth(coordinates_lists) {
 
 function centre(scaled_coordinates_lists, canvas_width, canvas_height) {
     let min_max_data = getMinMax(scaled_coordinates_lists);
-    let min_x = min_max_data["min_x"];
-    let max_x = min_max_data["max_x"];
-    let min_y = min_max_data["min_y"];
-    let max_y = min_max_data["max_y"];
+    let {min_x, max_x, min_y, max_y} = min_max_data;
     let region_height = max_y - min_y;
     let region_width = max_x - min_x;
     let desired_min_y = Math.round(canvas_height/2) - Math.round(region_height/2);
