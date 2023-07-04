@@ -6,16 +6,16 @@
 function webMercatorProjection(coordinates_lists, zoom_level) {
     let new_coordinates_lists = [];
     for (const coordinates_list of coordinates_lists) {
-        let new_coordinates = [];
+        let new_coordinates_list = [];
         for (const coordinates of coordinates_list) {
             let longitude_radians = coordinates[0];
             let latitude_radians = coordinates[1];
             let x = (1/(2*Math.PI)) * (2**zoom_level) * (longitude_radians + Math.PI);
             let log_calculation = Math.log(Math.tan((Math.PI/4) + (latitude_radians/2)));
             let y = (1/(2*Math.PI)) * (2**zoom_level) * (Math.PI - log_calculation);
-            new_coordinates.push([x, y]);
+            new_coordinates_list.push([x, y]);
         }
-        new_coordinates_lists.push(new_coordinates);
+        new_coordinates_lists.push(new_coordinates_list);
     }
     return new_coordinates_lists;
 }
