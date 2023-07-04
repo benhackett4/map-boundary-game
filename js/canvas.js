@@ -35,7 +35,6 @@ function drawAnswer(ctx, region, projection) {
     let strokeStyle = '';
     if (projection == "Equirectangular") {
         strokeStyle = 'rgb(255 0 0)';
-        coordinates_lists = equirectangularProjection(coordinates_lists, 500, 500);
         coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Albers Equal Area Conic") {
         strokeStyle = 'rgb(0 255 0)';
@@ -49,6 +48,7 @@ function drawAnswer(ctx, region, projection) {
         return;
     }
 
+    coordinates_lists = scaleCoordinates(coordinates_lists, 500, 500);
     coordinates_lists = centre(coordinates_lists, 600, 600);
 
     drawBoundaries(ctx, coordinates_lists, strokeStyle);

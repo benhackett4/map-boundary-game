@@ -10,14 +10,13 @@ function webMercatorProjection(coordinates_lists, zoom_level) {
         for (const coordinates of coordinates_list) {
             let longitude_radians = coordinates[0];
             let latitude_radians = coordinates[1];
-            let x = Math.floor( (1/(2*Math.PI)) * (2**zoom_level) * (longitude_radians + Math.PI) );
+            let x = (1/(2*Math.PI)) * (2**zoom_level) * (longitude_radians + Math.PI);
             let log_calculation = Math.log(Math.tan((Math.PI/4) + (latitude_radians/2)));
-            let y = Math.floor( (1/(2*Math.PI)) * (2**zoom_level) * (Math.PI - log_calculation) );
+            let y = (1/(2*Math.PI)) * (2**zoom_level) * (Math.PI - log_calculation);
             new_coordinates.push([x, y]);
         }
         new_coordinates_lists.push(new_coordinates);
     }
-    console.log(new_coordinates_lists);
     return new_coordinates_lists;
 }
 
