@@ -1,17 +1,5 @@
 "use strict";
 
-function invertY(coordinates_lists) {
-    let {min_y, max_y} = getMinMax(coordinates_lists);
-    let inverted_coordinates_lists = [];
-    for (const coordinates_list of coordinates_lists) {
-        let inverted_coordinates_list = coordinates_list.map(coordinates => {
-            return [coordinates[0], min_y + max_y - coordinates[1]];
-        });
-        inverted_coordinates_lists.push(inverted_coordinates_list);
-    }
-    return inverted_coordinates_lists;
-}
-
 function drawPath(ctx, scaled_coordinates){
     ctx.beginPath();
     let initial_coordinate = scaled_coordinates[0];
