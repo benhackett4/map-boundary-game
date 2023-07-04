@@ -12,6 +12,24 @@ function getMinMax(coordinates_lists) {
     return return_data;
 }
 
+function degreesToRadians(coordinates) {
+    return [
+        coordinates[0] * Math.PI / 180,
+        coordinates[1] * Math.PI / 180,
+    ];
+}
+
+function coordinatesListsDegreesToRadians(coordinates_lists) {
+    let radians_coordinates_lists = [];
+    for (const coordinates_list of coordinates_lists) {
+        let radians_coordinates_list = coordinates_list.map(coordinates => {
+            return degreesToRadians(coordinates);
+        });
+        radians_coordinates_lists.push(radians_coordinates_list);
+    }
+    return radians_coordinates_lists;
+}
+
 function invertY(coordinates_lists) {
     let {min_y, max_y} = getMinMax(coordinates_lists);
     let inverted_coordinates_lists = [];

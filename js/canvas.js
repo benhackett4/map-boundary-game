@@ -30,6 +30,8 @@ function drawAnswer(ctx, region, projection) {
         coordinates_lists = scrollHorizontallyToFindMinMapWidth(coordinates_lists);
     }
 
+    coordinates_lists = coordinatesListsDegreesToRadians(coordinates_lists);
+
     let strokeStyle = '';
     if (projection == "Equirectangular") {
         strokeStyle = 'rgb(255 0 0)';
