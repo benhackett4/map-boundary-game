@@ -38,7 +38,7 @@ function drawAnswer(ctx, region, projection) {
         coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Albers Equal Area Conic") {
         strokeStyle = 'rgb(0 255 0)';
-        coordinates_lists = albersEqualAreaConicProjection(coordinates_lists, 500, 500);
+        coordinates_lists = albersEqualAreaConicProjection(coordinates_lists);
         coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Web Mercator") {
         strokeStyle = 'rgb(0 0 255)';
