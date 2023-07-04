@@ -12,6 +12,58 @@ function getMinMax(coordinates_lists) {
     return return_data;
 }
 
+function degreesToRadians(coordinates) {
+    return [
+        coordinates[0] * Math.PI / 180,
+        coordinates[1] * Math.PI / 180,
+    ];
+}
+
+function coordinatesListsDegreesToRadians(coordinates_lists) {
+    let radians_coordinates_lists = [];
+    for (const coordinates_list of coordinates_lists) {
+        let radians_coordinates_list = coordinates_list.map(coordinates => {
+            return degreesToRadians(coordinates);
+        });
+        radians_coordinates_lists.push(radians_coordinates_list);
+    }
+    return radians_coordinates_lists;
+}
+
+function scaleCoordinates(coordinates_lists, width, height) {
+    let {min_x, max_x, min_y, max_y} = getMinMax(coordinates_lists);
+    let unscaled_height = max_y - min_y;
+    let unscaled_width = max_x - min_x;
+    let scale_factor_x = width / unscaled_width;
+    let scale_factor_y = height / unscaled_height;
+    let scale_factor = Math.min(scale_factor_x, scale_factor_y);
+    let new_coordinates_lists = [];
+    for (const coordinates_list of coordinates_lists) {
+        let new_coordinates = [];
+        for (const coordinates of coordinates_list) {
+            let x = coordinates[0];
+            let y = coordinates[1];
+            let new_x = (x - min_x) * scale_factor;
+            let new_y = (y - min_y) * scale_factor;
+            new_coordinates.push([new_x, new_y]);
+        }
+        new_coordinates_lists.push(new_coordinates);
+    }
+    return new_coordinates_lists;
+}
+
+function invertY(coordinates_lists) {
+    let {min_y, max_y} = getMinMax(coordinates_lists);
+    let inverted_coordinates_lists = [];
+    for (const coordinates_list of coordinates_lists) {
+        let inverted_coordinates_list = coordinates_list.map(coordinates => {
+            return [coordinates[0], min_y + max_y - coordinates[1]];
+        });
+        inverted_coordinates_lists.push(inverted_coordinates_list);
+    }
+    return inverted_coordinates_lists;
+}
+
 // Assume that "list" is a non-empty list of lists.
 // Assume that each list element has the exact same "type", if you will.
 function isListOfPairsOfNonLists(list) {
@@ -97,8 +149,8 @@ function centre(scaled_coordinates_lists, canvas_width, canvas_height) {
     let {min_x, max_x, min_y, max_y} = min_max_data;
     let region_height = max_y - min_y;
     let region_width = max_x - min_x;
-    let desired_min_y = Math.round(canvas_height/2) - Math.round(region_height/2);
-    let desired_min_x = Math.round(canvas_width/2) - Math.round(region_width/2);
+    let desired_min_y = (canvas_height/2) - (region_height/2);
+    let desired_min_x = (canvas_width/2) - (region_width/2);
     let offset_y = desired_min_y - min_y;
     let offset_x = desired_min_x - min_x;
     return applyOffset(scaled_coordinates_lists, offset_x, offset_y, 0, canvas_width, 0, canvas_height);

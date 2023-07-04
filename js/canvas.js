@@ -1,31 +1,23 @@
 "use strict";
 
-function getY(y, invert_y, canvas_height) {
-    if (!invert_y) {
-        return y;
-    }
-    return canvas_height - y;
-}
-
-function drawPath(ctx, scaled_coordinates, invert_y){
+function drawPath(ctx, scaled_coordinates){
     ctx.beginPath();
     let initial_coordinate = scaled_coordinates[0];
     // TODO - fix 600 hardcoding.
-    ctx.moveTo(initial_coordinate[0], getY(initial_coordinate[1], invert_y, 600));
+    ctx.moveTo(initial_coordinate[0], initial_coordinate[1]);
     for (let i=1; i < scaled_coordinates.length; i++) {
         let coordinates = scaled_coordinates[i];
         let x = coordinates[0];
         let y = coordinates[1];
-        // Y axis is in the opposite direction from conventional graphs.
-        ctx.lineTo(x, getY(y, invert_y, 600));
+        ctx.lineTo(x, y);
     }
     ctx.stroke();
 }
 
-function drawBoundaries(ctx, scaled_coordinates_lists, strokeStyle, invert_y) {
+function drawBoundaries(ctx, scaled_coordinates_lists, strokeStyle) {
     ctx.strokeStyle = strokeStyle;
     for (const scaled_coordinates of scaled_coordinates_lists) {
-        drawPath(ctx, scaled_coordinates, invert_y);
+        drawPath(ctx, scaled_coordinates);
     }
 }
 
@@ -38,26 +30,28 @@ function drawAnswer(ctx, region, projection) {
         coordinates_lists = scrollHorizontallyToFindMinMapWidth(coordinates_lists);
     }
 
+    coordinates_lists = coordinatesListsDegreesToRadians(coordinates_lists);
+
     let strokeStyle = '';
-    let invert_y = true;
     if (projection == "Equirectangular") {
         strokeStyle = 'rgb(255 0 0)';
-        coordinates_lists = equirectangularProjection(coordinates_lists, 500, 500);
+        coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Albers Equal Area Conic") {
         strokeStyle = 'rgb(0 255 0)';
         coordinates_lists = albersEqualAreaConicProjection(coordinates_lists, 500, 500);
+        coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Web Mercator") {
         strokeStyle = 'rgb(0 0 255)';
         coordinates_lists = webMercatorProjection(coordinates_lists, 9);
-        invert_y = false;  // The projection itself already inverted y.
     } else {
         console.log("Error: unexpected projection: " + projection);
         return;
     }
 
+    coordinates_lists = scaleCoordinates(coordinates_lists, 500, 500);
     coordinates_lists = centre(coordinates_lists, 600, 600);
 
-    drawBoundaries(ctx, coordinates_lists, strokeStyle, invert_y);
+    drawBoundaries(ctx, coordinates_lists, strokeStyle);
 }
 
 function resetCanvas() {
