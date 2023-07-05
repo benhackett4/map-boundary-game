@@ -26,8 +26,15 @@ function onLoad() {
         let region_name = region_selector.value;
         human_answer = getBoolMatrix(ctx, 255, 255, 255, 255);
         let projection = projection_selector.value;
+        let actual_answer_rgb = projectionToRGB(projection);
         drawAnswer(ctx, region_name, projection);
-        actual_answer = getBoolMatrix(ctx, 255, 0, 0, 255);
+        actual_answer = getBoolMatrix(
+            ctx,
+            actual_answer_rgb[0],
+            actual_answer_rgb[1],
+            actual_answer_rgb[2],
+            255
+        );
     }
     answer_button.addEventListener("click", (event) => {
         showAnswer();

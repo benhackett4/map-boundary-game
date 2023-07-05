@@ -21,6 +21,22 @@ function drawBoundaries(ctx, scaled_coordinates_lists, strokeStyle) {
     }
 }
 
+function projectionToRGB(projection) {
+    if (projection == "Equirectangular") {
+        return [255, 0, 0];
+    } else if (projection == "Albers Equal Area Conic") {
+        return [0, 255, 0];
+    } else if (projection == "Web Mercator") {
+        return [0, 0, 255];
+    }
+    return null;
+}
+
+function projectionToStrokeStyle(projection) {
+    let [r, g, b] = projectionToRGB(projection);
+    return `rgb(${r} ${g} ${b} )`;
+}
+
 function drawAnswer(ctx, region, projection) {
     let boundary = getBoundary(boundaries, region);
     let coordinates_lists = getCoordinates(boundary, region);
@@ -32,16 +48,12 @@ function drawAnswer(ctx, region, projection) {
 
     coordinates_lists = coordinatesListsDegreesToRadians(coordinates_lists);
 
-    let strokeStyle = '';
     if (projection == "Equirectangular") {
-        strokeStyle = 'rgb(255 0 0)';
         coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Albers Equal Area Conic") {
-        strokeStyle = 'rgb(0 255 0)';
         coordinates_lists = albersEqualAreaConicProjection(coordinates_lists);
         coordinates_lists = invertY(coordinates_lists);
     } else if (projection == "Web Mercator") {
-        strokeStyle = 'rgb(0 0 255)';
         coordinates_lists = webMercatorProjection(coordinates_lists, 9);
     } else {
         console.log("Error: unexpected projection: " + projection);
@@ -50,6 +62,7 @@ function drawAnswer(ctx, region, projection) {
 
     coordinates_lists = scaleCoordinates(coordinates_lists, 500, 500);
     coordinates_lists = centre(coordinates_lists, 600, 600);
+    let strokeStyle = projectionToStrokeStyle(projection);
 
     drawBoundaries(ctx, coordinates_lists, strokeStyle);
 }
