@@ -3,13 +3,18 @@ body {
     color: white;
 }
 
+#canvas-and-instructions {
+    display: grid;
+    grid-template-columns: 650px 1fr;
+}
+
 #main {
     margin-left: 80px;
+    margin-top: 20px;
 }
 
 #borders-canvas {
 	border: 1px solid black;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
 

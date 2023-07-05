@@ -24,7 +24,16 @@
 
 <body onload="onLoad();">
 <div id="main">
-    <canvas id="borders-canvas" width="600" height="600"></canvas>
+    <div id="canvas-and-instructions">
+        <div id="canvas-div">
+            <canvas id="borders-canvas" width="600" height="600"></canvas>
+        </div>
+        <div id="instructions">
+            Select a region/country. <br>
+            Try to draw it with your mouse (doesn't work on mobile). <br>
+            Then click "Show Answer" or "Grade Me". <br>
+        </div>
+    </div>
     <div>
         <select name="region" id="region-selector" class="form-select form-select-sm"> </select>
         <select name="projection" id="projection-selector" class="form-select form-select-sm">
