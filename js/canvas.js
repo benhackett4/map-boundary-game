@@ -1,5 +1,12 @@
 "use strict";
 
+function drawCircle(ctx, centre_x, centre_y, radius){
+    ctx.strokeStyle = 'rgb(255 255 255)';
+    ctx.beginPath();
+    ctx.arc(centre_x, centre_y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
 function drawPath(ctx, scaled_coordinates){
     ctx.beginPath();
     let initial_coordinate = scaled_coordinates[0];

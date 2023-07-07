@@ -54,6 +54,23 @@ function onLoad() {
         grade_div.innerText = "";
     });
 
+    const circle_button = document.getElementById("one-circle-button");
+    if (circle_button) {
+        circle_button.addEventListener("click", (event) => {
+            drawCircle(ctx, 300, 300, 150);
+        });
+    }
+
+    const many_circles_button = document.getElementById("twenty-circles-button");
+    if (many_circles_button) {
+        many_circles_button.addEventListener("click", (event) => {
+            for (let i=0; i<20; i++) {
+                drawCircle(ctx, 300, 300, (i+1)*15);
+            }
+        });
+    }
+
+
     // last known position
     globalThis.mouse_pos = { x: 0, y: 0 };
 

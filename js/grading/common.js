@@ -128,7 +128,31 @@ function distanceToNearestPointNaive(matrix, i, j) {
     return min_distance;
 }
 
-function sumNearestDistances(matrix_from, matrix_to) {
+function boolMatrixToList(matrix) {
+    let list = [];
+    for (let i=0; i<matrix.length; i++) {
+        for (let j=0; j<matrix[i].length; j++) {
+            if (matrix[i][j]) {
+                list.push([i, j]);
+            }
+        }
+    }
+    return list;
+}
+
+function distanceToNearestPointInList(list, i, j) {
+    let min_distance = Infinity;
+    for (const indices of list) {
+        let [m, n] = indices;
+        let distance = Math.round(Math.sqrt((m-i)**2 + (n-j)**2));
+        if (distance < min_distance) {
+            min_distance = distance;
+        }
+    }
+    return min_distance;
+}
+
+function sumNearestDistancesUsingMatrix(matrix_from, matrix_to) {
     let sum = 0;
     for (let i=0; i<matrix_from.length; i++) {
         for (let j=0; j<matrix_from[i].length; j++) {
@@ -140,6 +164,30 @@ function sumNearestDistances(matrix_from, matrix_to) {
             }
         }
     }
+    return sum;
+}
+
+function sumNearestDistancesUsingList(matrix_from, matrix_to) {
+    let matrix_to_list = boolMatrixToList(matrix_to);
+    let sum = 0;
+    for (let i=0; i<matrix_from.length; i++) {
+        for (let j=0; j<matrix_from[i].length; j++) {
+            if (matrix_from[i][j]) {
+                let distance = distanceToNearestPointInList(matrix_to_list, i, j);
+                if (distance !== null) {
+                    sum += distance;
+                }
+            }
+        }
+    }
+    return sum;
+}
+
+function sumNearestDistances(matrix_from, matrix_to) {
+    let begin_time = performance.now();
+    let sum = sumNearestDistancesUsingList(matrix_from, matrix_to);
+    let end_time = performance.now();
+    console.log(`sumNearestDistances took ${end_time - begin_time} ms`);
     return sum;
 }
 
