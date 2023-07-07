@@ -53,34 +53,18 @@ function init2DMatrix(max_i, max_j, init_value) {
 }
 
 function minDistanceWithinRadius(matrix, i, j, radius) {
-    let min_distance = null;
+    let min_distance = Infinity;
     for (let m=Math.max(i-radius, 0); m<=Math.min(i+radius, 600); m++) {
         for (let n=Math.max(j-radius, 0); n<=Math.min(j+radius, 600); n++) {
             if (matrixElementExists(matrix, m, n)) {
                 if (matrix[m][n]) {
                     let distance = Math.round(Math.sqrt((m-i)**2 + (n-j)**2));
-                    if (min_distance === null || distance < min_distance) {
-                        min_distance = distance;
-                    }
+                    min_distance = Math.min(min_distance, distance);
                 }
             }
         }
     }
     return min_distance;
-}
-
-function searchWithinRadius(matrix, i, j, radius) {
-    let min_distance = null;
-    for (let m=Math.max(i-radius, 0); m<=Math.min(i+radius, 600); m++) {
-        for (let n=Math.max(j-radius, 0); n<=Math.min(j+radius, 600); n++) {
-            if (matrixElementExists(matrix, m, n)) {
-                if (matrix[m][n]) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 }
 
 function distanceToNearestPoint4(matrix, i, j) {
@@ -92,28 +76,8 @@ function distanceToNearestPoint4(matrix, i, j) {
     return distanceToNearestPointNaive(matrix, i, j);
 }
 
-function distanceToNearestPoint3(matrix, i, j) {
-    for (let radius = 5; radius <= 600; radius+=5) {
-        if (searchWithinRadius(matrix, i, j, radius)) {
-            return radius;
-        }
-    }
-    return null;
-}
-
-function distanceToNearestPoint2(matrix, i, j) {
-    let radius_list = [5, 15, 50, 150, 600];
-    for (const radius of radius_list) {
-        let distance = minDistanceWithinRadius(matrix, i, j, radius);
-        if (distance !== null) {
-            return distance;
-        }
-    };
-    return null;
-}
-
 function distanceToNearestPointNaive(matrix, i, j) {
-    let min_distance = 999999999; // TODO - fix hackiness??
+    let min_distance = Infinity;
     for (let m=0; m<matrix.length; m++) {
         for (let n=0; n<matrix[m].length; n++) {
             if (matrix[m][n]) {
@@ -185,7 +149,7 @@ function sumNearestDistancesUsingList(matrix_from, matrix_to) {
 
 function sumNearestDistances(matrix_from, matrix_to) {
     let begin_time = performance.now();
-    let sum = sumNearestDistancesUsingList(matrix_from, matrix_to);
+    let sum = sumNearestDistancesUsingMatrix(matrix_from, matrix_to);
     let end_time = performance.now();
     console.log(`sumNearestDistances took ${end_time - begin_time} ms`);
     return sum;
