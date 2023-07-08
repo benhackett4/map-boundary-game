@@ -7,6 +7,19 @@ function getNumberOfCoordinates(coordinates_lists) {
     );
 }
 
+function getNumberOfBools(matrix) {
+    let count = 0;
+    for (let m=0; m<matrix.length; m++) {
+        for (let n=0; n<matrix[m].length; n++) {
+            if (matrix[m][n]) {
+                count++;
+            }
+        }
+    }
+    console.log(`Number of bools in matrix: ${count}`);
+    return count;
+}
+
 function pixelValuesMatchRGBA(pixel_values, rgba) {
     for (let i=0; i<4; i++){
         if (pixel_values[i] != rgba[i]) {
@@ -67,6 +80,58 @@ function minDistanceWithinRadius(matrix, i, j, radius) {
     return min_distance;
 }
 
+function distanceToNearestPointOutwardSpiral(matrix, i, j) {
+    if (matrix[i][j]) {
+        return 0;
+    }
+    let max_i = matrix.length - 1;
+    let max_j = matrix[0].length - 1;
+    let max_dimension = Math.max(max_i, max_j);
+    for (let counter=0; counter <= max_dimension; counter++) {
+        let upper_i = i + counter;
+        let lower_i = i - counter;
+        let upper_j = j + counter;
+        let lower_j = j - counter;
+        
+        if (upper_i <= max_i) {
+            let m = upper_i;
+            for (let n=Math.max(0, lower_j); n <= Math.min(max_j, upper_j); n++) {
+                if (matrix[m][n]) {
+                    return counter;
+                }
+            }
+        }
+
+        if (lower_i >= 0) {
+            let m = lower_i;
+            for (let n=Math.max(0, lower_j); n <= Math.min(max_j, upper_j); n++) {
+                if (matrix[m][n]) {
+                    return counter;
+                }
+            }
+        }
+
+        if (upper_j <= max_j) {
+            let n = upper_j;
+            for (let m=Math.max(0, lower_i); m <= Math.min(max_i, upper_i); m++) {
+                if (matrix[m][n]) {
+                    return counter;
+                }
+            }
+        }
+
+        if (lower_j >= 0) {
+            let n = lower_j;
+            for (let m=Math.max(0, lower_i); m <= Math.min(max_i, upper_i); m++) {
+                if (matrix[m][n]) {
+                    return counter;
+                }
+            }
+        }
+    }
+    return Infinity;
+}
+
 function distanceToNearestPoint4(matrix, i, j) {
     let distance = minDistanceWithinRadius(matrix, i, j, 50);
     if (distance !== null) {
@@ -121,7 +186,7 @@ function sumNearestDistancesUsingMatrix(matrix_from, matrix_to) {
     for (let i=0; i<matrix_from.length; i++) {
         for (let j=0; j<matrix_from[i].length; j++) {
             if (matrix_from[i][j]) {
-                let distance = distanceToNearestPoint4(matrix_to, i, j);
+                let distance = distanceToNearestPointOutwardSpiral(matrix_to, i, j);
                 if (distance !== null) {
                     sum += distance;
                 }
@@ -149,13 +214,19 @@ function sumNearestDistancesUsingList(matrix_from, matrix_to) {
 
 function sumNearestDistances(matrix_from, matrix_to) {
     let begin_time = performance.now();
-    let sum = sumNearestDistancesUsingMatrix(matrix_from, matrix_to);
+    let sum;
+    if (getNumberOfBools(matrix_to) <= 8000) {
+        sum = sumNearestDistancesUsingList(matrix_from, matrix_to);
+    } else {
+        sum = sumNearestDistancesUsingMatrix(matrix_from, matrix_to);
+    }
     let end_time = performance.now();
     console.log(`sumNearestDistances took ${end_time - begin_time} ms`);
     return sum;
 }
 
 function numericScoreToLetterGrade(score) {
+    console.log(`Your numeric score: ${score}`);
     if (score < 10000) {
         return "A+";
     } else if (score < 30000) {
