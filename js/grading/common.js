@@ -255,3 +255,5 @@ function numericScoreToLetterGrade(score) {
     return "F";
 }
 
+export { getBoolMatrix, sumNearestDistances, numericScoreToLetterGrade };
+

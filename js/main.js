@@ -1,6 +1,11 @@
 "use strict";
 
-function onLoad() {
+import { drawCircle, projectionToRGB, drawAnswer, resetCanvas, setMousePosition, mouseDraw } from "./canvas.js";
+import { getBoundary, getCoordinates } from "./border-data/world-administrative-boundaries/import.js";
+import { getBoundaries } from "./border-data/world-administrative-boundaries/world-administrative-boundaries.js";
+import { getBoolMatrix, sumNearestDistances, numericScoreToLetterGrade } from "./grading/common.js";
+
+export function onLoad() {
     const canvas = document.getElementById("borders-canvas");
     const ctx = canvas.getContext("2d");
     // If lineWidth is 1, no data points are the exact color of the strokeStyle :/.
@@ -11,6 +16,7 @@ function onLoad() {
     const region_selector = document.getElementById("region-selector");
     const projection_selector = document.getElementById("projection-selector");
     const grade_div = document.getElementById("grade");
+    let boundaries = getBoundaries();
     let region_names = boundaries.map(boundary => boundary["name"]);
     region_names.sort();
     for (const region_name of region_names) {
@@ -27,7 +33,9 @@ function onLoad() {
         human_answer = getBoolMatrix(ctx, 255, 255, 255, 255);
         let projection = projection_selector.value;
         let actual_answer_rgb = projectionToRGB(projection);
-        drawAnswer(ctx, region_name, projection);
+        let boundary = getBoundary(boundaries, region_name);
+        let coordinates_lists = getCoordinates(boundary);
+        drawAnswer(ctx, region_name, coordinates_lists, projection);
         actual_answer = getBoolMatrix(
             ctx,
             actual_answer_rgb[0],
@@ -81,4 +89,5 @@ function onLoad() {
     resetCanvas();
 }
 
+window.addEventListener('load', onLoad);
 

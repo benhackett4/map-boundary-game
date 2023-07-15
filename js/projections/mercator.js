@@ -3,7 +3,7 @@
 // https://stackoverflow.com/questions/14329691/convert-latitude-longitude-point-to-a-pixels-x-y-on-mercator-projection
 // https://en.wikipedia.org/wiki/Web_Mercator_projection
 
-function webMercatorProjection(coordinates_lists, zoom_level) {
+export function webMercatorProjection(coordinates_lists, zoom_level) {
     let new_coordinates_lists = [];
     for (const coordinates_list of coordinates_lists) {
         let new_coordinates_list = [];

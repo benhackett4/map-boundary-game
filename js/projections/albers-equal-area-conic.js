@@ -1,9 +1,11 @@
 "use strict";
 
+import { getMinMax } from "../border-data/common.js";
+
 // https://en.wikipedia.org/wiki/Albers_projection
 // https://surferhelp.goldensoftware.com/projections/Albers_Equal_Area_Conic_Projection.htm
 
-function albersEqualAreaConicProjection(coordinates_lists) {
+export function albersEqualAreaConicProjection(coordinates_lists) {
     let {min_x, max_x, min_y, max_y} = getMinMax(coordinates_lists);
     let standard_parallel_1 = min_y;
     let standard_parallel_2 = max_y;
@@ -26,7 +28,6 @@ function albersEqualAreaConicProjection(coordinates_lists) {
         }
         projected_coordinates_lists.push(projected_coordinates_list);
     }
-    console.log(projected_coordinates_lists);
     return projected_coordinates_lists;
 }
 

@@ -1,6 +1,8 @@
 "use strict";
 
-function getCoordinates(boundary, region) {
+import { findAllListsOfPairs } from "../common.js";
+
+function getCoordinates(boundary) {
     let coordinates = boundary["geo_shape"]["geometry"]["coordinates"];
     return findAllListsOfPairs(coordinates);
 }
@@ -14,4 +16,5 @@ function getBoundary(boundaries, region) {
     return null;
 }
 
+export { getCoordinates, getBoundary };
 

@@ -1,5 +1,9 @@
 "use strict";
 
+import { coordinatesListsDegreesToRadians, scaleCoordinates, invertY, scrollHorizontallyToFindMinMapWidth, centre } from "./border-data/common.js";
+import { albersEqualAreaConicProjection } from "./projections/albers-equal-area-conic.js";
+import { webMercatorProjection } from "./projections/mercator.js";
+
 function drawCircle(ctx, centre_x, centre_y, radius){
     ctx.strokeStyle = 'rgb(255 255 255)';
     ctx.beginPath();
@@ -44,10 +48,7 @@ function projectionToStrokeStyle(projection) {
     return `rgb(${r} ${g} ${b} )`;
 }
 
-function drawAnswer(ctx, region, projection) {
-    let boundary = getBoundary(boundaries, region);
-    let coordinates_lists = getCoordinates(boundary, region);
-
+function drawAnswer(ctx, region, coordinates_lists, projection) {
     if (region == "Russian Federation" || region == "United States of America") {
         // Must happen before projections, otherwise you risk ending up with a tiny map.
         coordinates_lists = scrollHorizontallyToFindMinMapWidth(coordinates_lists);
@@ -100,5 +101,5 @@ function mouseDraw(e) {
     ctx.stroke();
 }
 
-
+export { drawCircle, projectionToRGB, drawAnswer, resetCanvas, setMousePosition, mouseDraw };
 

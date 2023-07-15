@@ -156,5 +156,5 @@ function centre(scaled_coordinates_lists, canvas_width, canvas_height) {
     return applyOffset(scaled_coordinates_lists, offset_x, offset_y, 0, canvas_width, 0, canvas_height);
 }
 
-
+export { getMinMax, coordinatesListsDegreesToRadians, scaleCoordinates, invertY, findAllListsOfPairs, scrollHorizontallyToFindMinMapWidth, centre };
 
